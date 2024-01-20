@@ -1,5 +1,5 @@
 # killmenow.pp
 
 exec { 'killmenow_process':
-  command     => 'pkill killmenow',
+  command     => 'pkill -9 -f killmenow',
 }
