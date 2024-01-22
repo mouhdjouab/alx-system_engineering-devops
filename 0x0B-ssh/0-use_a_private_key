@@ -1,0 +1,2 @@
+#!/usr/bin/bash
+ssh -i ~/.ssh/school root@41.111.66.237
