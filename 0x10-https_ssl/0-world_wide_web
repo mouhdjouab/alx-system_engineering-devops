@@ -1,29 +1,15 @@
 #!/usr/bin/env bash
-#  Bash script display information
+# ouptuts DNS record information
+subd_print ()
+{
+    echo -n "The subdomain ""$2"
+    dig "$2"".""$1" +noall +answer | awk 'NF==5 {print " is a", $(NF-1), "record and points to", $NF}'
+}
 
-# Check 
-if [ $# -lt 1 ]; then
-  echo "Usage: $0 domain [subdomain1 subdomain2 ...]"
-  exit 1
+if [[ $2 ]]; then
+    subd_print "$1" "$2"
+elif [[ $1 ]]; then
+    for sub_d in 'www' 'lb-01' 'web-01' 'web-02'; do
+	subd_print "$1" "$sub_d"
+	done
 fi
-
-# Set domain 
-domain="$1"
-
-# Set subdomains
-subdomains=("www" "lb-01" "web-01" "web-02")
-
-# If additional subdomains add them to the subdomains array
-if [ $# -gt 1 ]; then
-  subdomains+=("${@:2}")
-fi
-
-# Loop through subdomains
-for subdomain in "${subdomains[@]}"; do
-  output=$(dig "$subdomain.$domain" +short)
-  if [ -n "$output" ]; then
-    echo "The subdomain $subdomain has IP address $output"
-  else
-    echo "The subdomain $subdomain does not exist"
-  fi
-done
