@@ -1,6 +1,4 @@
 #!/usr/bin/env bash
 # script test  server prot
-
-#!/usr/bin/env bash
-sed -i 's/8080/80/g' /etc/nginx/sites-enabled/default
-service nginx restart
+sudo ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+sudo service nginx restart
