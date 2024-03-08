@@ -1,28 +1,17 @@
 #!/usr/bin/python3
-"""
-the Reddit API and prints the titles of subreddit.
-"""
-import requests
+"""Module  task 1"""
 
 
 def top_ten(subreddit):
-    """
-    prints the titles
-    """
-    url_web = ("https://reddit.com/r/{}?sort=hot&limit=10".format(subreddit))
-    head = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) \
-            AppleWebKit/537.36 (KHTML, like Gecko) \
-                Chrome/122.0.0.0 Safari/537.36'}
-    respons = requests.get(url_web, headers=head, allow_redirects=False)
+    """Queries Reddit API """
+    import requests
 
-    if respons.status_code != 200:
-        print(None)
-        return
-    respons = respons.json()
-    if 'data' in respons:
-        for posts in respons.get('data').get('children'):
-            print(posts.get('data').get('title'))
-
+    sub_info = requests.get("https://www.reddit.com/r/{}/hot.json?limit=10"
+                            .format(subreddit),
+                            headers={"User-Agent": "My-User-Agent"},
+                            allow_redirects=False)
+    if sub_info.status_code >= 300:
+        print('None')
     else:
-        print(None)
+        [print(child.get("data").get("title"))
+         for child in sub_info.json().get("data").get("children")]
